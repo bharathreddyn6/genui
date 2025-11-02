@@ -209,7 +209,7 @@ function App() {
 
 						<div className="md:col-span-9 lg:col-span-10 mb-2 pb-2 sm:flex sm:items-center ">
 				      <h1 className="">
-				        <a href="/" className="opacity-50 hover:opacity-100 duration-200">← back</a>
+				        <a href="/app" className="opacity-50 hover:opacity-100 duration-200">← back</a>
 				        <span className="sm:hidden"><br/></span>
 				        <span className="ml-4 font-bold text-lg">{name}</span>
 				      </h1>

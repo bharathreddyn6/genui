@@ -146,11 +146,46 @@ export default function Browse() {
 
 	return (
 		<>
-			<div className="min-h-screen min-h-screen overflow-y-auto antialiased">
+			<div className="min-h-screen min-h-screen overflow-y-auto antialiased bg-gradient-to-br from-gray-50 to-purple-50 dark:from-gray-900 dark:to-purple-900/20">
 				<div className={!processing ? "" : 'opacity-20'}>
+					{/* Beautiful Welcome Banner */}
+					{openv0ComponentsList.length === 0 && !componentStream && (
+						<div className="max-w-4xl mx-auto px-6 pt-20 pb-32 text-center">
+							<div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-600 to-blue-600 rounded-3xl mb-6 shadow-2xl">
+								<svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+								</svg>
+							</div>
+							<h1 className="text-5xl md:text-6xl font-extrabold mb-6 bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
+								Start Creating Magic ✨
+							</h1>
+							<p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+								Describe any UI component you can imagine, and watch as AI brings it to life in seconds.
+							</p>
+							<div className="grid md:grid-cols-3 gap-6 text-left">
+								<div className="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-purple-900">
+									<div className="text-3xl mb-3">💬</div>
+									<h3 className="font-bold text-lg mb-2 text-gray-800 dark:text-white">Describe</h3>
+									<p className="text-sm text-gray-600 dark:text-gray-300">Use natural language to describe what you want</p>
+								</div>
+								<div className="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-blue-100 dark:border-blue-900">
+									<div className="text-3xl mb-3">⚡</div>
+									<h3 className="font-bold text-lg mb-2 text-gray-800 dark:text-white">Generate</h3>
+									<p className="text-sm text-gray-600 dark:text-gray-300">AI creates production-ready code instantly</p>
+								</div>
+								<div className="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-pink-100 dark:border-pink-900">
+									<div className="text-3xl mb-3">🎨</div>
+									<h3 className="font-bold text-lg mb-2 text-gray-800 dark:text-white">Iterate</h3>
+									<p className="text-sm text-gray-600 dark:text-gray-300">Refine and perfect with simple prompts</p>
+								</div>
+							</div>
+						</div>
+					)}
+					
 					<div className="fixed bottom-0 left-0 w-screen max-w-screen
-				    px-6 md:px-32 xl:px-72 py-8
-				    grid sm:flex items-center space-x-2 xl:space-x-4 space-y-1 z-50">
+				    px-6 md:px-32 xl:px-72 py-6
+				    grid sm:flex items-center space-x-2 xl:space-x-4 space-y-1 z-50
+				    bg-gradient-to-t from-white via-white to-transparent dark:from-gray-900 dark:via-gray-900">
 
 						<div>
 				      {generateMode === 'json' ? (
@@ -207,33 +242,60 @@ export default function Browse() {
 				      </a>
 				    </div>
 
-						<div className="sm:w-full rounded rounded-xl p-2 flex items-center text-xl duration-200 shadow shadow-lg dark:shadow-[#090909] bg-[#ddd] dark:bg-[#222] dark:text-white">
+						<div className="sm:w-full rounded-2xl p-3 flex items-center text-xl duration-200 shadow-2xl border-2 border-purple-200 dark:border-purple-800 bg-white dark:bg-gray-800 dark:text-white hover:border-purple-400 dark:hover:border-purple-600 transition-all">
 				      <div className="sm:mx-4 w-full max-h-32 overflow-auto">
 				        {generateMode === 'description' ? (
-				          <input
-				            className="w-full p-2 text-base md:text-xl bg-transparent outline-none border-none ring-none"
-				            placeholder="describe your component"
-				            value={userInputDescription}
-				            onChange={(e) => setUserInputDescription(e.target.value)}
-				          />
+				          <div className="relative">
+				            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-purple-500">
+				              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+				              </svg>
+				            </div>
+				            <input
+				              className="w-full pl-12 pr-4 py-4 text-base md:text-lg bg-transparent outline-none border-none ring-none placeholder-gray-400 dark:placeholder-gray-500"
+				              placeholder="Describe your dream component... ✨"
+				              value={userInputDescription}
+				              onChange={(e) => setUserInputDescription(e.target.value)}
+				              onKeyDown={(e) => {
+				                if (e.key === 'Enter' && !e.shiftKey) {
+				                  e.preventDefault();
+				                  newComponent();
+				                }
+				              }}
+				            />
+				          </div>
 				        ) : (
-				          <textarea
-				            className="w-full p-2 text-sm md:text-xs resize-none font-light font-mono bg-transparent outline-none border-none ring-none"
-				            rows={4}
-				            placeholder="paste your json object here"
-				            value={userInputJson}
-				            onChange={(e) => setUserInputJson(e.target.value)}
-				          />
+				          <div className="relative">
+				            <div className="absolute left-3 top-4 text-purple-500">
+				              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+				              </svg>
+				            </div>
+				            <textarea
+				              className="w-full pl-12 pr-4 py-4 text-sm md:text-base resize-none font-mono bg-transparent outline-none border-none ring-none placeholder-gray-400 dark:placeholder-gray-500"
+				              rows={4}
+				              placeholder='{ "component": "button", "style": "modern" }'
+				              value={userInputJson}
+				              onChange={(e) => setUserInputJson(e.target.value)}
+				            />
+				          </div>
 				        )}
 				      </div>
 				    </div>
 
 						<div className="sm:mx-4 duration-200">
-				      <div
+				      <button
 				        onClick={newComponent}
-				        className="rounded rounded-full shadow shadow-md shadow-[#e0e0e] p-4 text-lg bg-[#ccc] hover:bg-[#111] duration-200 cursor-pointer dark:invert"
+				        disabled={processing}
+				        className="group relative rounded-2xl shadow-2xl p-5 text-lg bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 disabled:from-gray-400 disabled:to-gray-500 duration-200 cursor-pointer transform hover:scale-110 active:scale-95 transition-all disabled:cursor-not-allowed"
 				      >
-								<svg height="30" width="30" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xmlSpace="preserve" fill="#777">
+				        {processing ? (
+				          <svg className="w-7 h-7 text-white animate-spin" fill="none" viewBox="0 0 24 24">
+				            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+				            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+				          </svg>
+				        ) : (
+								<svg height="30" width="30" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xmlSpace="preserve" fill="#fff" className="drop-shadow-lg">
 									<g id="SVGRepo_bgCarrier" strokeWidth="0"/>
 									<g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"/>
 									<g id="SVGRepo_iconCarrier">
@@ -252,7 +314,8 @@ export default function Browse() {
 										</g>
 									</g>
 								</svg>
-				      </div>
+				        )}
+				      </button>
 				    </div>
 
 					</div>
@@ -266,40 +329,40 @@ export default function Browse() {
 				  dark:bg-[#050505] dark:text-[#fff]">
 
 					{openv0ComponentsList.length || componentStream ? (
-		        <div className="p-2 rounded grid sm:grid-cols-2 xl:grid-cols-3 items-start">
+		        <div className="p-2 rounded grid sm:grid-cols-2 xl:grid-cols-3 items-start gap-4">
 
 						{loadedComponents.map((component, index) => (
 
-							<div key={index} className="m-1 hover:m-2 duration-200 relative group">
-								<a href={`/view/${component.name}`} className="cursor-pointer block">
-					      <div className="p-2 rounded rounded-md">
-					        <div className="flex justify-between items-start">
+							<div key={index} className="relative group transform transition-all duration-300 hover:scale-105">
+								<a href={`/app/view/${component.name}`} className="cursor-pointer block">
+					      <div className="p-4 rounded-xl bg-white shadow-lg hover:shadow-2xl transition-shadow duration-300 border-2 border-transparent hover:border-purple-300">
+					        <div className="flex justify-between items-start mb-3">
 					          <div>
-					            <h2 className="text-base font-medium opacity-50">{component.name}</h2>
-					            <h2 className="text-xs opacity-30 font-light">{component.versions} version(s)</h2>
+					            <h2 className="text-lg font-semibold text-gray-800">{component.name}</h2>
+					            <h2 className="text-xs text-gray-500 font-light mt-1">{component.versions} version(s)</h2>
 					          </div>
 					          <button
 					            onClick={(e) => deleteComponent(component.name, e)}
 					            disabled={deletingComponent === component.name}
-					            className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 hover:bg-red-500 hover:bg-opacity-20 rounded"
+					            className="opacity-0 group-hover:opacity-100 transition-all duration-200 p-2 hover:bg-red-100 rounded-lg"
 					            title="Delete component"
 					          >
-					            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-red-500">
+					            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-red-500">
 					              <path d="M3 6h18"></path>
 					              <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
 					              <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
 					            </svg>
 					          </button>
 					        </div>
-					        <div className="my-2 bg-white dark:bg-[#222] dark:text-white p-4 text-sm max-h-52 max-w-32 overflow-hidden">
+					        <div className="my-2 bg-gradient-to-br from-gray-50 to-purple-50 dark:bg-[#222] dark:text-white p-4 text-sm max-h-52 max-w-32 overflow-hidden rounded-lg border border-purple-100">
 					          {component && component.component !== 'fail' ? (
 					            <div style={{zoom: '30%'}}>
 												<component.component  />
 											</div>
 					          ) : component.component === 'fail' ? (
-					            <p className="text-xs">could not import</p>
+					            <p className="text-xs text-red-500">could not import</p>
 					          ) : (
-					            <p className="text-xs">loading</p>
+					            <p className="text-xs text-gray-400">loading...</p>
 					          )}
 					        </div>
 					      </div>
@@ -309,11 +372,19 @@ export default function Browse() {
 			      ))}
 
 						{componentStream && (
-				      <div className="m-1 hover:m-2 duration-200 cursor-pointer opacity-70">
-				        <div className="p-2 rounded rounded-md">
-				          <h2 className="text-base font-medium opacity-50">New Component</h2>
-				          <h2 className="text-xs opacity-70 font-light">in process</h2>
-				          <div className="my-2 bg-white dark:bg-[#222] dark:text-white p-4 text-xs max-h-52 max-w-32 overflow-hidden whitespace-pre-wrap break-words font-mono">
+				      <div className="relative animate-pulse">
+				        <div className="p-4 rounded-xl bg-white shadow-lg border-2 border-purple-400">
+				          <div className="flex items-center gap-2 mb-3">
+				            <svg className="w-5 h-5 text-purple-600 animate-spin" fill="none" viewBox="0 0 24 24">
+				              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+				              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+				            </svg>
+				            <div>
+				              <h2 className="text-lg font-semibold text-purple-700">New Component</h2>
+				              <h2 className="text-xs text-purple-500 font-light">generating...</h2>
+				            </div>
+				          </div>
+				          <div className="my-2 bg-gradient-to-br from-purple-50 to-blue-50 dark:bg-[#222] dark:text-white p-4 text-xs max-h-52 max-w-32 overflow-hidden whitespace-pre-wrap break-words font-mono rounded-lg border border-purple-200">
 				            {componentStream}
 				          </div>
 				        </div>
